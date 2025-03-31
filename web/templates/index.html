@@ -1,0 +1,448 @@
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Oral Cancer Detection</title>
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+    <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@300;400;500;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+    <style>
+        body {
+            font-family: 'Roboto', sans-serif;
+            color: #333;
+            background: url('https://media.istockphoto.com/id/911633218/vector/abstract-geometric-medical-cross-shape-medicine-and-science-concept-background.jpg?s=612x612&w=0&k=20&c=eYz8qm5xa5wbWCWKgjOpTamavekYv8XqPTA0MC4tHGA=') no-repeat center center fixed;
+            background-size: cover;
+            position: relative;
+        }
+        .navbar {
+            background: rgba(0, 123, 255, 0.9);
+            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+        }
+        .navbar-brand {
+            font-weight: 700;
+        }
+        .card {
+            border: none;
+            border-radius: 15px;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+        }
+        .file-upload {
+            position: relative;
+            overflow: hidden;
+            display: inline-block;
+        }
+        .file-upload input[type="file"] {
+            font-size: 100px;
+            position: absolute;
+            left: 0;
+            top: 0;
+            opacity: 0;
+        }
+        .file-upload-label {
+            display: inline-block;
+            padding: 10px 20px;
+            background: #007bff;
+            color: white;
+            border-radius: 5px;
+            cursor: pointer;
+            transition: background 0.3s;
+        }
+        .file-upload-label:hover {
+            background: #0056b3;
+        }
+        .uploaded-image {
+            max-width: 100%;
+            border-radius: 10px;
+            margin-top: 20px;
+        }
+        .footer {
+            margin-top: 50px;
+            padding: 20px;
+            background: rgba(0, 123, 255, 0.9);
+            color: white;
+            text-align: center;
+        }
+        .section-heading {
+            font-size: 2rem;
+            font-weight: 700;
+            color: #007bff;
+            margin-bottom: 20px;
+            text-shadow: 1px 1px 2px rgba(0, 0, 0, 0.1);
+        }
+        .icon {
+            font-size: 3rem;
+            color: #007bff;
+            margin-bottom: 10px;
+        }
+
+        /* Chatbot Styles */
+        #chatbot-container {
+            position: fixed;
+            bottom: 20px;
+            right: 20px;
+            width: 300px;
+            background: white;
+            border-radius: 15px;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+            display: none;
+        }
+        #chatbot-header {
+            background: #007bff;
+            color: white;
+            padding: 10px;
+            border-top-left-radius: 15px;
+            border-top-right-radius: 15px;
+            cursor: pointer;
+        }
+        #chatbot-body {
+            padding: 10px;
+            max-height: 300px;
+            overflow-y: auto;
+        }
+        #chatbot-input {
+            width: 100%;
+            padding: 10px;
+            border: 1px solid #ddd;
+            border-radius: 5px;
+        }
+        .chatbot-message {
+            margin-bottom: 10px;
+        }
+        .chatbot-message.user {
+            text-align: right;
+        }
+        .chatbot-message.bot {
+            text-align: left;
+        }
+        .typing-indicator {
+            color: #888;
+            font-style: italic;
+        }
+        #chatbot-close {
+            float: right;
+            cursor: pointer;
+            font-size: 20px;
+            font-weight: bold;
+            color: white;
+        }
+        #chatbot-close:hover {
+            color: #ccc;
+        }
+        #chatbot-toggle {
+            position: fixed;
+            bottom: 20px;
+            right: 20px;
+            background: #007bff;
+            color: white;
+            border: none;
+            border-radius: 50%;
+            width: 50px;
+            height: 50px;
+            cursor: pointer;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+        }
+    </style>
+</head>
+<body>
+    <!-- Navigation Bar -->
+    <nav class="navbar navbar-expand-lg navbar-dark">
+        <div class="container">
+            <a class="navbar-brand" href="#">
+                <i class="fas fa-teeth-open"></i> Oral Cancer Detection
+            </a>
+        </div>
+    </nav>
+
+    <!-- Main Content -->
+    <div class="container mt-5">
+        <div class="row justify-content-center">
+            <div class="col-md-8">
+                <div class="card p-4">
+                    <h1 class="text-center mb-4">Oral Cancer Detection</h1>
+                    <p class="text-center text-muted">Upload an image to check for cancerous indicators.</p>
+
+                    <!-- Upload Form -->
+                    <form action="/" method="post" enctype="multipart/form-data" class="text-center">
+                        <div class="form-group">
+                            <div class="file-upload">
+                                <label for="file-upload-input" class="file-upload-label">
+                                    <i class="fas fa-upload"></i> Choose Image
+                                </label>
+                                <input id="file-upload-input" type="file" class="form-control-file" name="file" accept="image/*" required>
+                            </div>
+                        </div>
+                        <button type="submit" class="btn btn-primary btn-lg">
+                            <i class="fas fa-search"></i> Analyze Image
+                        </button>
+                    </form>
+
+                    <!-- Display Uploaded Image -->
+                    <div id="uploaded-image-container" class="text-center mt-4">
+                        <img id="uploaded-image" src="#" alt="Uploaded Image" class="uploaded-image" style="display: none;">
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- How It Works Section -->
+        <div class="row justify-content-center mt-5">
+            <div class="col-md-8">
+                <div class="card p-4">
+                    <h2 class="section-heading text-center">How It Works</h2>
+                    <div class="row text-center">
+                        <div class="col-md-4">
+                            <i class="fas fa-upload icon"></i>
+                            <h5>Upload Image</h5>
+                            <p>Upload a clear image of the oral area for analysis.</p>
+                        </div>
+                        <div class="col-md-4">
+                            <i class="fas fa-microscope icon"></i>
+                            <h5>AI Analysis</h5>
+                            <p>Our AI model detects potential cancerous indicators.</p>
+                        </div>
+                        <div class="col-md-4">
+                            <i class="fas fa-file-medical icon"></i>
+                            <h5>Get Results</h5>
+                            <p>Receive detailed results and recommendations.</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Chart Section -->
+        <div class="row justify-content-center mt-5">
+            <div class="col-md-8">
+                <div class="card p-4">
+                    <h3 class="section-heading text-center">Model Performance</h3>
+                    <canvas id="performanceGraph" width="400" height="200"></canvas>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Footer -->
+    <footer class="footer">
+        <div class="container">
+            <p class="mb-0">&copy; 2025 Oral Cancer Detection. All rights reserved.</p>
+        </div>
+    </footer>
+
+    <!-- Chatbot -->
+    <button id="chatbot-toggle">
+        <i class="fas fa-comment"></i>
+    </button>
+    <div id="chatbot-container">
+        <div id="chatbot-header">
+            <strong>Oral Cancer Chatbot</strong>
+            <span id="chatbot-close">&times;</span>
+        </div>
+        <div id="chatbot-body">
+            <div class="chatbot-message bot">Hello! I'm here to help with your questions about oral cancer.</div>
+        </div>
+        <input type="text" id="chatbot-input" placeholder="Ask a question...">
+        <div id="quick-questions" style="margin-top: 10px;">
+            <p><strong>Quick Questions:</strong></p>
+            <button class="btn btn-sm btn-outline-primary mb-1" onclick="askQuestion('What is oral cancer?')">What is oral cancer?</button>
+            <button class="btn btn-sm btn-outline-primary mb-1" onclick="askQuestion('What are the symptoms of oral cancer?')">Symptoms of oral cancer</button>
+            <button class="btn btn-sm btn-outline-primary mb-1" onclick="askQuestion('How to prevent oral cancer?')">How to prevent oral cancer?</button>
+        </div>
+        <div id="voice-buttons" style="margin-top: 10px;">
+            <button class="btn btn-sm btn-outline-success mb-1" onclick="startVoiceInput()">🎤 Speak</button>
+            <button class="btn btn-sm btn-outline-danger mb-1" onclick="stopVoiceInput()">Stop</button>
+        </div>
+        <button id="clear-chat" class="btn btn-sm btn-danger mt-2">Clear Chat</button>
+    </div>
+
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <script>
+        // Display uploaded image
+        document.getElementById('file-upload-input').addEventListener('change', function(event) {
+            const file = event.target.files[0];
+            if (file) {
+                const reader = new FileReader();
+                reader.onload = function(e) {
+                    const uploadedImage = document.getElementById('uploaded-image');
+                    uploadedImage.src = e.target.result;
+                    uploadedImage.style.display = 'block';
+                };
+                reader.readAsDataURL(file);
+            }
+        });
+
+        // Chart configuration
+        const ctx = document.getElementById('performanceGraph').getContext('2d');
+        const performanceGraph = new Chart(ctx, {
+            type: 'bar',
+            data: {
+                labels: ['Accuracy', 'Precision', 'Recall'],
+                datasets: [{
+                    label: 'Model Metrics',
+                    data: [0.95, 0.90, 0.88],
+                    backgroundColor: ['rgba(75, 192, 192, 0.6)', 'rgba(255, 206, 86, 0.6)', 'rgba(54, 162, 235, 0.6)'],
+                    borderColor: ['rgba(75, 192, 192, 1)', 'rgba(255, 206, 86, 1)', 'rgba(54, 162, 235, 1)'],
+                    borderWidth: 1
+                }]
+            },
+            options: {
+                scales: {
+                    y: {
+                        beginAtZero: true,
+                        max: 1
+                    }
+                },
+                plugins: {
+                    legend: {
+                        display: true,
+                        position: 'top'
+                    }
+                }
+            }
+        });
+
+        // Chatbot Logic
+        const chatbotToggle = document.getElementById('chatbot-toggle');
+        const chatbotContainer = document.getElementById('chatbot-container');
+        const chatbotBody = document.getElementById('chatbot-body');
+        const chatbotInput = document.getElementById('chatbot-input');
+
+        let recognition; // For speech-to-text
+
+        // Close chatbot when the close button is clicked
+        document.getElementById('chatbot-close').addEventListener('click', () => {
+            chatbotContainer.style.display = 'none';
+        });
+
+        // Toggle chatbot visibility
+        chatbotToggle.addEventListener('click', () => {
+            chatbotContainer.style.display = chatbotContainer.style.display === 'none' ? 'block' : 'none';
+        });
+
+        // Quick questions
+        function askQuestion(question) {
+            chatbotInput.value = question;
+            chatbotInput.dispatchEvent(new KeyboardEvent('keypress', { key: 'Enter' }));
+        }
+
+        // Clear chat history
+        document.getElementById('clear-chat').addEventListener('click', () => {
+            chatbotBody.innerHTML = '<div class="chatbot-message bot">Hello! I\'m here to help with your questions about oral cancer.</div>';
+        });
+
+        // Chatbot input handler
+        chatbotInput.addEventListener('keypress', (e) => {
+            if (e.key === 'Enter') {
+                const userMessage = chatbotInput.value.trim();
+                if (userMessage) {
+                    // Display user message
+                    chatbotBody.innerHTML += `<div class="chatbot-message user">${userMessage}</div>`;
+                    chatbotInput.value = '';
+
+                    // Show typing indicator
+                    chatbotBody.innerHTML += `<div class="chatbot-message bot typing-indicator">Typing...</div>`;
+                    chatbotBody.scrollTop = chatbotBody.scrollHeight;
+
+                    // Simulate bot response after a delay
+                    setTimeout(() => {
+                        // Remove typing indicator
+                        document.querySelector('.typing-indicator').remove();
+
+                        // Add bot response
+                        const botResponse = getBotResponse(userMessage);
+                        chatbotBody.innerHTML += `<div class="chatbot-message bot">${botResponse}</div>`;
+                        chatbotBody.scrollTop = chatbotBody.scrollHeight;
+
+                        // Speak the bot's response
+                        speak(botResponse);
+                    }, 1000); // 1-second delay
+                }
+            }
+        });
+
+        // Bot response logic
+        function getBotResponse(userMessage) {
+            const responses = {
+                "hello": "Hello! How can I assist you today?",
+                "what is oral cancer": "Oral cancer refers to cancers that develop in the mouth or throat. It can affect the lips, tongue, cheeks, and other areas.",
+                "symptoms of oral cancer": "Common symptoms include mouth sores, lumps, pain, difficulty swallowing, and persistent bad breath.",
+                "how to prevent oral cancer": "Avoid tobacco, limit alcohol, maintain good oral hygiene, and visit your dentist regularly.",
+                "does HPV cause oral cancer": "Yes, HPV (Human Papillomavirus) is a known risk factor for certain types of oral cancers, especially oropharyngeal cancer.",
+                "what are the risk factors for oral cancer": "Risk factors include smoking, alcohol use, HPV infection, poor diet, chronic irritation, and excessive sun exposure.",
+                "how can i check for oral cancer at home": "Look for persistent sores, lumps, white or red patches, or difficulty swallowing. If symptoms persist for more than two weeks, see a doctor.",
+                "is oral cancer more common in men or women": "Oral cancer is more common in men, mainly due to higher rates of tobacco and alcohol use.",
+                "what is the best treatment for oral cancer": "The best treatment depends on the stage and location of the cancer. Surgery, radiation, and chemotherapy are commonly used.",
+                "can oral cancer be detected early": "Yes, regular dental check-ups and self-examinations can help detect oral cancer in its early stages.",
+                "does poor oral hygiene lead to oral cancer": "Poor oral hygiene alone is not a direct cause but can contribute to the risk by increasing infections and chronic irritation.",
+                "can children get oral cancer": "Oral cancer is rare in children but can occur, especially in cases of genetic predisposition or HPV infection.",
+                "how long does oral cancer treatment last": "Treatment duration depends on the stage of cancer and the type of treatment, ranging from weeks to several months.",
+                "what are the stages of oral cancer": "Oral cancer is staged from 0 to IV. Stage 0 is the earliest, and Stage IV means the cancer has spread to other parts of the body.",
+                "can oral cancer spread": "Yes, oral cancer can spread to other parts of the body, such as the lymph nodes, lungs, or bones, if not treated early.",
+                "what is the survival rate for oral cancer": "The 5-year survival rate for oral cancer is about 65% if detected early, but it drops significantly if the cancer has spread.",
+                "how is oral cancer treated": "Treatment options include surgery to remove the tumor, radiation therapy, chemotherapy, and targeted drug therapy.",
+                "can oral cancer be prevented": "Yes, by avoiding tobacco, limiting alcohol, practicing good oral hygiene, and getting vaccinated against HPV.",
+                "what are the early signs of oral cancer": "Early signs include white or red patches in the mouth, sores that don't heal, and unexplained bleeding.",
+                "does smoking cause oral cancer": "Yes, smoking is one of the leading causes of oral cancer. It increases the risk significantly.",
+                "can alcohol cause oral cancer": "Yes, excessive alcohol consumption is a major risk factor for oral cancer, especially when combined with smoking.",
+                "what is a biopsy for oral cancer": "A biopsy involves taking a small sample of tissue from the mouth to check for cancer cells under a microscope.",
+                "how often should i get screened for oral cancer": "If you're at high risk, you should get screened at least once a year during your dental check-up.",
+                "what is the role of diet in oral cancer prevention": "A diet rich in fruits and vegetables can help reduce the risk of oral cancer. Avoid processed and smoked foods.",
+                "can oral cancer recur": "Yes, oral cancer can recur, especially if risk factors like smoking or alcohol use continue after treatment.",
+                "what are the long-term effects of oral cancer": "Long-term effects may include difficulty speaking, swallowing, or eating, as well as changes in appearance.",
+                "how can i support someone with oral cancer": "Offer emotional support, help with daily tasks, and encourage them to follow their treatment plan.",
+                "how long does oral cancer take to develop": "Oral cancer can take years to develop, and early-stage symptoms are often mild or unnoticed.",
+                "is oral cancer painful": "In early stages, oral cancer may not be painful, but as it progresses, it can cause significant discomfort and pain.",
+                "what is the difference between oral cancer and mouth sores": "Mouth sores usually heal within two weeks, while oral cancer lesions persist, grow, and may bleed easily.",
+                "default": "I'm sorry, I don't understand. Can you please rephrase your question?"
+            };
+
+            // Convert user message to lowercase for case-insensitive matching
+            const lowerCaseMessage = userMessage.toLowerCase();
+
+            // Check if the user's message matches any key in the responses object
+            for (const key in responses) {
+                if (lowerCaseMessage.includes(key)) {
+                    return responses[key]; // Return the corresponding response
+                }
+            }
+
+            // If no match is found, return the default response
+            return responses["default"];
+        }
+
+        // Text-to-Speech (TTS)
+        function speak(text) {
+            const utterance = new SpeechSynthesisUtterance(text);
+            utterance.lang = 'en-US'; // Set language for TTS
+            speechSynthesis.speak(utterance);
+        }
+
+        // Speech-to-Text (STT)
+        function startVoiceInput() {
+            recognition = new (window.SpeechRecognition || window.webkitSpeechRecognition)();
+            recognition.lang = 'en-US'; // Set language for STT
+            recognition.interimResults = false;
+            recognition.maxAlternatives = 1;
+
+            recognition.start();
+
+            recognition.onresult = (event) => {
+                const transcript = event.results[0][0].transcript;
+                chatbotInput.value = transcript;
+                chatbotInput.dispatchEvent(new KeyboardEvent('keypress', { key: 'Enter' }));
+            };
+
+            recognition.onerror = (event) => {
+                console.error('Speech recognition error:', event.error);
+            };
+        }
+
+        function stopVoiceInput() {
+            if (recognition) {
+                recognition.stop();
+            }
+        }
+    </script>
+</body>
+</html>
