@@ -1,0 +1,202 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Cancer Classification Report</title>
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+    <style>
+        body {
+            font-family: 'Arial', sans-serif;
+            background: url('https://media.istockphoto.com/id/911633218/vector/abstract-geometric-medical-cross-shape-medicine-and-science-concept-background.jpg?s=612x612&w=0&k=20&c=eYz8qm5xa5wbWCWKgjOpTamavekYv8XqPTA0MC4tHGA=') no-repeat center center fixed;
+            background-size: cover;
+            padding: 20px;
+        }
+        .report-section {
+            background: rgba(255, 255, 255, 0.9);
+            border-radius: 15px;
+            padding: 20px;
+            margin-bottom: 20px;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+            backdrop-filter: blur(5px);
+        }
+        h1, h2, h3 {
+            color: #007bff;
+            margin-bottom: 20px;
+        }
+        h1 {
+            font-size: 2.5rem;
+            font-weight: 700;
+        }
+        h2 {
+            font-size: 2rem;
+            font-weight: 600;
+        }
+        h3 {
+            font-size: 1.5rem;
+            font-weight: 500;
+        }
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-top: 20px;
+        }
+        table, th, td {
+            border: 1px solid #ddd;
+        }
+        th, td {
+            padding: 12px;
+            text-align: center;
+        }
+        th {
+            background: linear-gradient(135deg, #007bff, #0056b3);
+            color: white;
+        }
+        tr:nth-child(even) {
+            background-color: #f9f9f9;
+        }
+        .curve {
+            margin-top: 20px;
+            text-align: center;
+        }
+        .curve img {
+            max-width: 100%;
+            height: auto;
+            border-radius: 10px;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+        }
+        .icon {
+            font-size: 2rem;
+            color: #007bff;
+            margin-right: 10px;
+        }
+        .btn-custom {
+            background: linear-gradient(135deg, #007bff, #0056b3);
+            color: white;
+            border: none;
+            border-radius: 25px;
+            padding: 10px 20px;
+            font-weight: 500;
+            transition: transform 0.3s, box-shadow 0.3s;
+        }
+        .btn-custom:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <!-- Page 1: Accuracy and Classification Report -->
+        <div class="report-section">
+            <h1><i class="fas fa-file-medical-alt icon"></i>Cancer Classification Report</h1>
+            <h2><i class="fas fa-chart-line icon"></i>Accuracy: 94.83%</h2>
+
+            <h3><i class="fas fa-table icon"></i>Classification Report</h3>
+            <table>
+                <thead>
+                    <tr>
+                        <th>Class</th>
+                        <th>Precision</th>
+                        <th>Recall</th>
+                        <th>F1-Score</th>
+                        <th>Support</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td>0</td>
+                        <td>0.96</td>
+                        <td>0.96</td>
+                        <td>0.96</td>
+                        <td>500</td>
+                    </tr>
+                    <tr>
+                        <td>1</td>
+                        <td>0.93</td>
+                        <td>0.92</td>
+                        <td>0.92</td>
+                        <td>255</td>
+                    </tr>
+                    <tr>
+                        <td><strong>Accuracy</strong></td>
+                        <td colspan="3">0.95</td>
+                        <td>755</td>
+                    </tr>
+                    <tr>
+                        <td><strong>Macro Avg</strong></td>
+                        <td>0.94</td>
+                        <td>0.94</td>
+                        <td>0.94</td>
+                        <td>755</td>
+                    </tr>
+                    <tr>
+                        <td><strong>Weighted Avg</strong></td>
+                        <td>0.95</td>
+                        <td>0.95</td>
+                        <td>0.95</td>
+                        <td>755</td>
+                    </tr>
+                </tbody>
+            </table>
+
+            <h3><i class="fas fa-project-diagram icon"></i>Confusion Matrix</h3>
+            <div class="curve">
+                <!-- Confusion Matrix Image -->
+                <img src="C:/Users/Tanushree/Downloads/oral cancer detection copy 2/confusionmatrix.png" alt="Confusion Matrix">
+            </div>
+        </div>
+
+        <!-- Page 2: ROC Curve -->
+        <div class="report-section">
+            <h2><i class="fas fa-chart-area icon"></i>ROC Curve</h2>
+            <h3>Receiver Operating Characteristic</h3>
+            <div class="curve">
+                <!-- Use Bootstrap Grid for Side-by-Side Layout -->
+                <div class="row">
+                    <div class="col-md-6">
+                        <p><strong>True Positive Rate:</strong></p>
+                        <ul>
+                            <li>0.8</li>
+                            <li>0.6</li>
+                            <li>0.4</li>
+                            <li>0.2</li>
+                            <li>0.0</li>
+                        </ul>
+                    </div>
+                    <div class="col-md-6">
+                        <p><strong>False Positive Rate:</strong></p>
+                        <ul>
+                            <li>0.0</li>
+                            <li>0.2</li>
+                            <li>0.4</li>
+                            <li>0.6</li>
+                            <li>0.8</li>
+                            <li>1.0</li>
+                        </ul>
+                    </div>
+                </div>
+                <p><strong>ROC Curve (AUC = 0.94)</strong></p>
+                <!-- ROC Curve Image -->
+                <img src="/roccurve.png" alt="ROC Curve">
+            </div>
+        </div>
+
+        <!-- Page 3: Precision-Recall Curve -->
+        <div class="report-section">
+            <h2><i class="fas fa-chart-line icon"></i>Precision-Recall Curve</h2>
+            <div class="curve"> 
+                <p><strong>Precision-Recall Curve</strong></p>
+                <!-- Precision-Recall Curve Image -->
+                <img src="C:\Users\Tanushree\Downloads\precisionrecallcurve.png" alt="Precision-Recall Curve">
+            </div>
+        </div>
+    </div>
+
+    <!-- Bootstrap JS and Dependencies -->
+    <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.9.2/dist/umd/popper.min.js"></script>
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+</body>
+</html>

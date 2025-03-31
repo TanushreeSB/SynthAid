@@ -1,0 +1,248 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Detection Result</title>
+    <!-- Bootstrap CSS -->
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+    <!-- Font Awesome for Icons -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+    <!-- Custom Styles -->
+    <style>
+        body {
+            font-family: 'Roboto', sans-serif;
+            background-image: url('https://media.istockphoto.com/id/911633218/vector/abstract-geometric-medical-cross-shape-medicine-and-science-concept-background.jpg?s=612x612&w=0&k=20&c=eYz8qm5xa5wbWCWKgjOpTamavekYv8XqPTA0MC4tHGA=');
+            background-size: cover;
+            background-position: center;
+            background-repeat: no-repeat;
+            background-attachment: fixed;
+            color: #333;
+            position: relative;
+            min-height: 100vh;
+        }
+        body::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+          /*  background: linear-gradient(135deg, rgba(255, 255, 255, 0.9), rgba(248, 249, 250, 0.9)); /* Gradient overlay */
+            z-index: -1;
+        }
+        .container {
+            max-width: 800px;
+            margin: auto;
+            padding: 20px;
+          /*  background: rgba(255, 255, 255, 0.95); /* Semi-transparent white background */
+            border-radius: 15px;
+            box-shadow: 0 8px 16px rgba(0, 0, 0, 0.1);
+            animation: fadeIn 1s ease-in-out;
+        }
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(20px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+        h1 {
+            font-weight: 700;
+            color: #007bff;
+            margin-bottom: 20px;
+            text-shadow: 1px 1px 2px rgba(0, 0, 0, 0.1);
+        }
+        .card {
+            border: none;
+            border-radius: 15px;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+            margin-bottom: 20px;
+            transition: transform 0.3s, box-shadow 0.3s;
+        /*    background: rgba(255, 255, 255, 0.95); /* Semi-transparent white background */
+        }
+        .card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 8px 16px rgba(0, 0, 0, 0.2);
+        }
+        .card-img-top {
+            border-top-left-radius: 15px;
+            border-top-right-radius: 15px;
+        }
+        .card-title {
+            font-weight: 700;
+            color: #007bff;
+        }
+        .card-text {
+            color: #555;
+        }
+        .btn-primary {
+            background: linear-gradient(135deg, #007bff, #0056b3);
+            border: none;
+            border-radius: 25px;
+            padding: 10px 20px;
+            font-weight: 500;
+            transition: transform 0.3s, box-shadow 0.3s;
+        }
+        .btn-primary:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+        }
+        .btn-secondary {
+            background: linear-gradient(135deg, #6c757d, #5a6268);
+            border: none;
+            border-radius: 25px;
+            padding: 10px 20px;
+            font-weight: 500;
+            transition: transform 0.3s, box-shadow 0.3s;
+        }
+        .btn-secondary:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+        }
+        .metrics-section {
+            background: rgba(255, 255, 255, 0.95); /* Semi-transparent white background */
+            padding: 20px;
+            border-radius: 15px;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+            margin-bottom: 20px;
+        }
+        .metrics-section h4 {
+            font-weight: 700;
+            color: #007bff;
+            margin-bottom: 15px;
+        }
+        .metrics-section p {
+            font-size: 18px;
+            margin-bottom: 10px;
+        }
+        .metrics-section strong {
+            color: #007bff;
+        }
+        .progress {
+            height: 20px;
+            border-radius: 10px;
+            background: #e9ecef;
+            overflow: hidden;
+        }
+        .progress-bar {
+            background: linear-gradient(135deg, #007bff, #0056b3);
+        }
+        .card-header {
+            cursor: pointer;
+            transition: background-color 0.3s;
+        }
+        .card-header:hover {
+            background-color: rgba(0, 0, 0, 0.1);
+        }
+    </style>
+</head>
+<body>
+    <div class="container mt-5 text-center">
+        <h1>Detection Result</h1>
+        
+        <!-- Display Uploaded Image and Prediction Result -->
+        <div class="card" style="width: 100%; max-width: 400px; margin: auto;">
+            <img src="{{ url_for('static', filename='images 2/' + filename) }}" class="card-img-top" alt="Uploaded Image">
+            <div class="card-body">
+                <h5 class="card-title">Result: {{ result }}</h5>
+                <p class="card-text">The uploaded image is classified as: <strong>{{ result }}</strong>.</p>
+            </div>
+        </div>
+
+<!-- Display Cancer Overlay Image if Cancer Detected -->
+{% if overlay_filename %}
+<div class="card" style="width: 100%; max-width: 400px; margin: auto;">
+    <img src="{{ url_for('static', filename='images 2/' + overlay_filename) }}" class="card-img-top" alt="Cancer Highlighted Image">
+    <div class="card-body">
+        <h5 class="card-title">Cancer Highlighted</h5>
+        <p class="card-text">Highlighted areas indicate potential cancerous regions.</p>
+
+        <!-- Download Button with Current Date in Filename -->
+        <a id="downloadLink" href="{{ url_for('static', filename='images 2/' + overlay_filename) }}" class="btn btn-secondary">
+            <i class="fas fa-download"></i> Download Highlighted Image
+        </a>
+    </div>
+</div>
+
+<script>
+    // Add current date to the filename
+    const downloadLink = document.getElementById('downloadLink');
+    const currentDate = new Date().toISOString().split('T')[0]; // YYYY-MM-DD
+    downloadLink.download = `highlighted_image_${currentDate}.png`;
+</script>
+{% endif %}
+
+<script>
+    // Add current date to the filename
+    const downloadLink = document.getElementById('downloadLink');
+    const currentDate = new Date().toISOString().split('T')[0]; // YYYY-MM-DD
+    downloadLink.download = `highlighted_image_${currentDate}.png`;
+</script>
+{% endif %}
+
+
+        <!-- Next Steps Section -->
+        <div class="metrics-section">
+            <h4>Next Steps</h4>
+            <div class="row">
+                <!-- Flashcard for Cancer Detected -->
+                <div class="col-md-6 mb-4">
+                    <div class="card text-center">
+                        <div class="card-header bg-danger text-white" data-toggle="collapse" href="#cancerDetected" role="button" aria-expanded="false" aria-controls="cancerDetected">
+                            <i class="fas fa-exclamation-triangle fa-2x mb-2"></i>
+                            <h5 class="card-title">Cancer Detected</h5>
+                        </div>
+                        <div class="collapse" id="cancerDetected">
+                            <div class="card-body">
+                                <p class="card-text">Here's what you should do next:</p>
+                                <ul class="list-unstyled">
+                                    <li><i class="fas fa-stethoscope"></i> Consult a healthcare professional for further evaluation.</li>
+                                    <li><i class="fas fa-calendar-check"></i> Schedule a biopsy or additional tests as recommended.</li>
+                                    <li><i class="fas fa-calendar-alt"></i> Follow up with regular check-ups.</li>
+                                </ul>
+                            </div>
+                        </div>
+                    </div>
+                </div>            
+
+                <!-- Flashcard for Cancer Not Detected -->
+                <div class="col-md-6 mb-4">
+                    <div class="card text-center">
+                        <div class="card-header bg-success text-white" data-toggle="collapse" href="#cancerNotDetected" role="button" aria-expanded="false" aria-controls="cancerNotDetected">
+                            <i class="fas fa-smile fa-2x mb-2"></i>
+                            <h5 class="card-title">No Cancer Detected</h5>
+                        </div>
+                        <div class="collapse" id="cancerNotDetected">
+                            <div class="card-body">
+                                <p class="card-text">Here's what you should do next:</p>
+                                <ul class="list-unstyled">
+                                    <li><i class="fas fa-tooth"></i> Continue to monitor your oral health.</li>
+                                    <li><i class="fas fa-calendar-alt"></i> Schedule regular dental check-ups.</li>
+                                    <li><i class="fas fa-smile"></i> Maintain good oral hygiene practices.</li>
+                                </ul>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        
+        <div class="metrics-section text-center">
+            <h4>Schedule an Appointment</h4>
+            <p>If you need further consultation, schedule an appointment with a specialist.</p>
+            <!-- Calendly Embed Code -->
+            <link href="https://assets.calendly.com/assets/external/widget.css" rel="stylesheet">
+            <script src="https://assets.calendly.com/assets/external/widget.js" type="text/javascript"></script>
+            <button class="btn btn-primary" onclick="Calendly.initPopupWidget({url: 'https://calendly.com/'});">
+                <i class="fas fa-calendar-alt"></i> Schedule Now
+            </button>
+        </div>    
+
+        <a href="/" class="btn btn-primary mt-3">Upload Another Image</a>
+    </div>
+
+    <!-- Bootstrap JS and Dependencies -->
+    <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.9.2/dist/umd/popper.min.js"></script>
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+</body>
+</html>
