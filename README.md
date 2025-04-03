@@ -18,11 +18,16 @@ U-Net – For precise localization of cancerous regions.
 CNN – For classification and feature extraction.
 Keras, PyTorch – For training and optimizing segmentation models.
 
-5.  Dataset Creation and Augmentation
+4.  Dataset Creation and Augmentation
 Python – For preprocessing and combining real and synthetic images.
 OpenCV – For image manipulation and augmentation
 
-![image](https://github.com/user-attachments/assets/ea501945-a45e-4f9b-82f5-6c7d3300922f)
+5. Model Tuning and Performance Improvement
+Focal Loss, Class-Balanced Loss – To handle class imbalance and improve recall.
+Active Learning – For continuous model improvement using new data.
+
+6.  Deployment and Explainability
+Flask – To create a web-based interface for real-time model interaction.
 
 ![image](https://github.com/user-attachments/assets/68549d53-7c2a-4e1c-b660-1116e9fa0104)
 
