@@ -1,12 +1,11 @@
 # SynthAid
 
 - Synthetic Data Generation with GANs
-    Use DCGAN to generate realistic synthetic oral cancer images.
-  
-    Augment small datasets with diverse synthetic images to improve model                                                       
-    generalization.
-  
-   Ensure synthetic images capture detailed pathological variations for better model learning.
+     -   Use DCGAN to generate realistic synthetic oral cancer images.
+      
+     - Augment small datasets with diverse synthetic images to improve model generalization.
+      
+    - Ensure synthetic images capture detailed pathological variations for better model learning.
 
 1. Synthetic Data Generation
 DCGAN – For generating realistic synthetic oral cancer images.
@@ -29,7 +28,6 @@ Active Learning – For continuous model improvement using new data.
 6.  Deployment and Explainability
 Flask – To create a web-based interface for real-time model interaction.
 
-![image](https://github.com/user-attachments/assets/68549d53-7c2a-4e1c-b660-1116e9fa0104)
 
 ![image](https://github.com/user-attachments/assets/8a24721a-fabc-4b7b-aedd-dd92a35bf7c8)
 
